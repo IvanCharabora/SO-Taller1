@@ -1,0 +1,187 @@
+//CARGA PROGRAMA
+execve("./hai64", ["./hai64", "echo", "hola"], 0x7ffd03a7d598 /* 60 vars */) = 0
+uname({sysname="Linux", nodename="pc55.lab1112", ...}) = 0
+brk(NULL)                               = 0x196a000
+brk(0x196b1c0)                          = 0x196b1c0
+arch_prctl(ARCH_SET_FS, 0x196a880)      = 0
+readlink("/proc/self/exe", "/home/clinux01/Escritorio/Taller"..., 4096) = 49
+brk(0x198c1c0)                          = 0x198c1c0
+brk(0x198d000)                          = 0x198d000
+access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No existe el archivo o el directorio)
+
+//EL SIGACTION CAMBIA LA ACCION DE UN PROCESO
+//FORKEA UN PROCESO DESDE EL PROCESO PID 5748
+clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x196ab50) = 5749
+
+//OVERRIDEA EL SIGINT (MANDADO PARA INTERRUMPIR UN PROCESO, GENERALMENTE EL CONTROL C) CON OTRO HANDLER
+[pid  5748] rt_sigaction(SIGINT, {sa_handler=0x40108e, sa_mask=[INT], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x406bf0},  <unfinished ...>
+
+//OVERRIDEA EL SIGURG (CUANDO UN SOCKET TIENE URGENCIA)
+[pid  5749] rt_sigaction(SIGURG, {sa_handler=0x40105e, sa_mask=[URG], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x406bf0},  <unfinished ...>
+
+//RESUME LO DE ARRIBA PORQUE NO LLEGO POR FALTA DE QUANTA
+[pid  5748] <... rt_sigaction resumed>{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+
+//SIGPROCMASK EXAMINA Y CAMBIA LAS SEÑALES BLOQUEADAS
+//SIG_BLOCK INDICA QUE EL SET DE SEÑALES DADA POR SET TIENE QUE SER BLOQUEADA,
+//ENTRA A LA RUTINA
+[pid  5748] rt_sigprocmask(SIG_BLOCK, [CHLD],  <unfinished ...>
+
+//RESUME LO DE ARRIBA
+[pid  5749] <... rt_sigaction resumed>{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+
+//RESUME LO DE ARRIBA
+[pid  5748] <... rt_sigprocmask resumed>[], 8) = 0
+
+//MODIFICA EL HANDLER DEL SIGCHILD (LA DE CUANDO UN PROCESO HIJO TERMINA)
+[pid  5748] rt_sigaction(SIGCHLD, NULL, {sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+
+//SIG_SETMASK INDICA QUE EL SET DE SEÑALES DADA POR SET TIENE QUE SER REEMPLAZADA,
+[pid  5748] rt_sigprocmask(SIG_SETMASK, [], NULL, 8) = 0
+
+//DUERME 1 SEGUNDO
+[pid  5748] nanosleep({tv_sec=1, tv_nsec=0}, 0x7fff7fbac990) = 0
+
+//ESCRIBE SUP DESPUES DEL SLEEP
+[pid  5748] write(1, "sup!\n", 5)       = 5
+
+//LE MANDA LA SEÑAL SIGURG AL HIJO (SIGURG FUE OVERRIDEADA)
+[pid  5748] kill(5749, SIGURG)          = 0
+
+
+
+
+[pid  5749] --- SIGURG {si_signo=SIGURG, si_code=SI_USER, si_pid=5748, si_uid=1002} ---
+
+//ENTRA A LA RUTINA
+[pid  5748] rt_sigprocmask(SIG_BLOCK, [CHLD], [], 8) = 0
+
+//ESCRIBE YA VA 
+[pid  5749] write(1, "ya va!\n", 7 <unfinished ...>
+
+//MODIFICA EL HANDLER DEL SIGCHILD (LA DE CUANDO UN PROCESO HIJO TERMINA)
+[pid  5748] rt_sigaction(SIGCHLD, NULL, {sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+
+[pid  5749] <... write resumed>)        = 7
+[pid  5748] rt_sigprocmask(SIG_SETMASK, [],  <unfinished ...>
+[pid  5749] rt_sigreturn({mask=[]} <unfinished ...>
+[pid  5748] <... rt_sigprocmask resumed>NULL, 8) = 0
+[pid  5748] nanosleep({tv_sec=1, tv_nsec=0},  <unfinished ...>
+[pid  5749] <... rt_sigreturn resumed>) = 0
+[pid  5748] <... nanosleep resumed>0x7fff7fbac990) = 0
+[pid  5748] write(1, "sup!\n", 5)       = 5
+[pid  5748] kill(5749, SIGURG)          = 0
+
+
+
+
+[pid  5749] --- SIGURG {si_signo=SIGURG, si_code=SI_USER, si_pid=5748, si_uid=1002} ---
+[pid  5749] write(1, "ya va!\n", 7 <unfinished ...>
+[pid  5748] rt_sigprocmask(SIG_BLOCK, [CHLD],  <unfinished ...>
+[pid  5749] <... write resumed>)        = 7
+[pid  5748] <... rt_sigprocmask resumed>[], 8) = 0
+[pid  5749] rt_sigreturn({mask=[]} <unfinished ...>
+[pid  5748] rt_sigaction(SIGCHLD, NULL,  <unfinished ...>
+[pid  5749] <... rt_sigreturn resumed>) = 1
+[pid  5748] <... rt_sigaction resumed>{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[pid  5748] rt_sigprocmask(SIG_SETMASK, [], NULL, 8) = 0
+[pid  5748] nanosleep({tv_sec=1, tv_nsec=0}, 0x7fff7fbac990) = 0
+[pid  5748] write(1, "sup!\n", 5)       = 5
+[pid  5748] kill(5749, SIGURG)          = 0
+
+
+
+
+
+[pid  5749] --- SIGURG {si_signo=SIGURG, si_code=SI_USER, si_pid=5748, si_uid=1002} ---
+[pid  5748] rt_sigprocmask(SIG_BLOCK, [CHLD],  <unfinished ...>
+[pid  5749] write(1, "ya va!\n", 7 <unfinished ...>
+[pid  5748] <... rt_sigprocmask resumed>[], 8) = 0
+[pid  5749] <... write resumed>)        = 7
+[pid  5748] rt_sigaction(SIGCHLD, NULL,  <unfinished ...>
+[pid  5749] rt_sigreturn({mask=[]} <unfinished ...>
+[pid  5748] <... rt_sigaction resumed>{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[pid  5749] <... rt_sigreturn resumed>) = 2
+[pid  5748] rt_sigprocmask(SIG_SETMASK, [], NULL, 8) = 0
+[pid  5748] nanosleep({tv_sec=1, tv_nsec=0}, 0x7fff7fbac990) = 0
+[pid  5748] write(1, "sup!\n", 5)       = 5
+[pid  5748] kill(5749, SIGURG)          = 0
+
+
+
+[pid  5749] --- SIGURG {si_signo=SIGURG, si_code=SI_USER, si_pid=5748, si_uid=1002} ---
+[pid  5749] write(1, "ya va!\n", 7)     = 7
+[pid  5748] rt_sigprocmask(SIG_BLOCK, [CHLD],  <unfinished ...>
+[pid  5749] rt_sigreturn({mask=[]})     = 3
+[pid  5748] <... rt_sigprocmask resumed>[], 8) = 0
+[pid  5748] rt_sigaction(SIGCHLD, NULL, {sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[pid  5748] rt_sigprocmask(SIG_SETMASK, [], NULL, 8) = 0
+[pid  5748] nanosleep({tv_sec=1, tv_nsec=0}, 0x7fff7fbac990) = 0
+[pid  5748] write(1, "sup!\n", 5)       = 5
+[pid  5748] kill(5749, SIGURG)          = 0
+
+
+[pid  5749] --- SIGURG {si_signo=SIGURG, si_code=SI_USER, si_pid=5748, si_uid=1002} ---
+[pid  5749] write(1, "ya va!\n", 7 <unfinished ...>
+[pid  5748] rt_sigprocmask(SIG_BLOCK, [CHLD],  <unfinished ...>
+[pid  5749] <... write resumed>)        = 7
+[pid  5749] rt_sigreturn({mask=[]})     = 4
+[pid  5749] getppid()                   = 5748
+[pid  5748] <... rt_sigprocmask resumed>[], 8) = 0
+[pid  5749] kill(5748, SIGINT)          = 0
+
+
+
+[pid  5748] --- SIGINT {si_signo=SIGINT, si_code=SI_USER, si_pid=5749, si_uid=1002} ---
+[pid  5749] execve("/opt/miniconda3/bin/echo", ["echo", "hola"], 0x7fff7fbacc88 /* 60 vars */ <unfinished ...>
+[pid  5748] wait4(-1,  <unfinished ...>
+[pid  5749] <... execve resumed>)       = -1 ENOENT (No existe el archivo o el directorio)
+[pid  5749] execve("/opt/miniconda3/condabin/echo", ["echo", "hola"], 0x7fff7fbacc88 /* 60 vars */) = -1 ENOENT (No existe el archivo o el directorio)
+[pid  5749] execve("/home/clinux01/.local/bin/echo", ["echo", "hola"], 0x7fff7fbacc88 /* 60 vars */) = -1 ENOENT (No existe el archivo o el directorio)
+[pid  5749] execve("/usr/local/sbin/echo", ["echo", "hola"], 0x7fff7fbacc88 /* 60 vars */) = -1 ENOENT (No existe el archivo o el directorio)
+[pid  5749] execve("/usr/local/bin/echo", ["echo", "hola"], 0x7fff7fbacc88 /* 60 vars */) = -1 ENOENT (No existe el archivo o el directorio)
+[pid  5749] execve("/usr/sbin/echo", ["echo", "hola"], 0x7fff7fbacc88 /* 60 vars */) = -1 ENOENT (No existe el archivo o el directorio)
+[pid  5749] execve("/usr/bin/echo", ["echo", "hola"], 0x7fff7fbacc88 /* 60 vars */) = 0
+[pid  5749] brk(NULL)                   = 0x556723a11000
+[pid  5749] arch_prctl(0x3001 /* ARCH_??? */, 0x7ffde650c8a0) = -1 EINVAL (Argumento inválido)
+[pid  5749] access("/etc/ld.so.preload", R_OK) = -1 ENOENT (No existe el archivo o el directorio)
+[pid  5749] openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+[pid  5749] fstat(3, {st_mode=S_IFREG|0644, st_size=134083, ...}) = 0
+[pid  5749] mmap(NULL, 134083, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fc7bbf70000
+[pid  5749] close(3)                    = 0
+[pid  5749] openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+[pid  5749] read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\300A\2\0\0\0\0\0"..., 832) = 832
+[pid  5749] pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+[pid  5749] pread64(3, "\4\0\0\0\20\0\0\0\5\0\0\0GNU\0\2\0\0\300\4\0\0\0\3\0\0\0\0\0\0\0", 32, 848) = 32
+[pid  5749] pread64(3, "\4\0\0\0\24\0\0\0\3\0\0\0GNU\0\30x\346\264ur\f|Q\226\236i\253-'o"..., 68, 880) = 68
+[pid  5749] fstat(3, {st_mode=S_IFREG|0755, st_size=2029592, ...}) = 0
+[pid  5749] mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7fc7bbf6e000
+[pid  5749] pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+[pid  5749] pread64(3, "\4\0\0\0\20\0\0\0\5\0\0\0GNU\0\2\0\0\300\4\0\0\0\3\0\0\0\0\0\0\0", 32, 848) = 32
+[pid  5749] pread64(3, "\4\0\0\0\24\0\0\0\3\0\0\0GNU\0\30x\346\264ur\f|Q\226\236i\253-'o"..., 68, 880) = 68
+[pid  5749] mmap(NULL, 2037344, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7fc7bbd7c000
+[pid  5749] mmap(0x7fc7bbd9e000, 1540096, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x22000) = 0x7fc7bbd9e000
+[pid  5749] mmap(0x7fc7bbf16000, 319488, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x19a000) = 0x7fc7bbf16000
+[pid  5749] mmap(0x7fc7bbf64000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1e7000) = 0x7fc7bbf64000
+[pid  5749] mmap(0x7fc7bbf6a000, 13920, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7fc7bbf6a000
+[pid  5749] close(3)                    = 0
+[pid  5749] arch_prctl(ARCH_SET_FS, 0x7fc7bbf6f580) = 0
+[pid  5749] mprotect(0x7fc7bbf64000, 16384, PROT_READ) = 0
+[pid  5749] mprotect(0x5567220bb000, 4096, PROT_READ) = 0
+[pid  5749] mprotect(0x7fc7bbfbe000, 4096, PROT_READ) = 0
+[pid  5749] munmap(0x7fc7bbf70000, 134083) = 0
+[pid  5749] brk(NULL)                   = 0x556723a11000
+[pid  5749] brk(0x556723a32000)         = 0x556723a32000
+[pid  5749] openat(AT_FDCWD, "/usr/lib/locale/locale-archive", O_RDONLY|O_CLOEXEC) = 3
+[pid  5749] fstat(3, {st_mode=S_IFREG|0644, st_size=8378608, ...}) = 0
+[pid  5749] mmap(NULL, 8378608, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7fc7bb57e000
+[pid  5749] close(3)                    = 0
+[pid  5749] fstat(1, {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0), ...}) = 0
+[pid  5749] write(1, "hola\n", 5)       = 5
+[pid  5749] close(1)                    = 0
+[pid  5749] close(2)                    = 0
+[pid  5749] exit_group(0)               = ?
+[pid  5749] +++ exited with 0 +++
+<... wait4 resumed>[{WIFEXITED(s) && WEXITSTATUS(s) == 0}], 0, NULL) = 5749
+exit_group(0)                           = ?
++++ exited with 0 +++
