@@ -39,14 +39,14 @@ int main(int argc, char* argv[]) {
 			int killParam = ptrace(PTRACE_PEEKUSER, child, 8 * RSI, NULL); //parámetro de la syscall (9)
 
 
-			if(num == 62 && killParam == SIGKILL){
-				// && err == ENOSYS
-				kill(child,SIGKILL);
-				printf("muerto %d", child);
-				break;
+			if(num == 62 && killParam == SIGKILL && err == -ENOSYS){//
+				//kill(child,SIGKILL);//
+				ptrace(PTRACE_KILL, child, NULL, NULL);
+				printf("muertoooooooo %d \n", child);//
+				break;//
 			}
 
-			ptrace(PTRACE_SYSCALL, child);
+			ptrace(PTRACE_SYSCALL, child);//
 		}
 	}
 	return 0;
